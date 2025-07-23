@@ -21,5 +21,5 @@ from core.views import index, perfil
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
-    path('/perfil', perfil, name="perfil")
+    path('/perfil', perfil, name="perfil"),
 ]
