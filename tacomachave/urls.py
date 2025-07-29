@@ -21,9 +21,6 @@ from core.views import index, perfil
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
-<<<<<<< Updated upstream
     path('/perfil', perfil, name="perfil"),
-=======
     path('/perfil', perfil, name="perfil")
->>>>>>> Stashed changes
 ]
