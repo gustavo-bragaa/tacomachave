@@ -1,0 +1,27 @@
+
+{% extends 'base/base.html' %}
+
+{% block content %}
+<section class="barra-pesquisa"> 
+    <input type="text" placeholder="Busque o nome ou número da chave aqui...">
+    <button>PESQUISAR</button>
+    <button>FILTROS </button>
+</section>
+
+<section class="grade-cartoes">
+    <div class="cartao">
+        <div class="numero-sala">Sala 22</div>
+        <div class="nome-sala">Grêmio</div>
+        <div class="status-sala">Indisponível</div>
+    </div>
+</section>
+
+<br>
+
+
+<footer class="paginacao">
+    <p>Página 1 • 2 • 3 • ... </p> 
+
+</footer>
+
+{% endblock %}
