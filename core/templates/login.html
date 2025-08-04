@@ -5,7 +5,7 @@
 {% block content %}
 <section class="form-login">
   <h2>LOGIN</h2>
-  <form method="POST" action="{{ url_for('login') }}">
+  <form method="POST" action="{% url 'login' %}">
     <label for="usuario">USUÁRIO:</label>
     <input type="text" name="usuario" id="usuario" required>
 
