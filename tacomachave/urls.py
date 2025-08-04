@@ -21,7 +21,7 @@ from core.views import index, perfil, login, sobre
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
-    path('/perfil', perfil, name="perfil"),
-    path('/login', login, name="login"),
-    path('/sobrenos', sobre, name="sobre"),
+    path('perfil/', perfil, name="perfil"),
+    path('login/', login, name="login"),
+    path('sobrenos/', sobre, name="sobrenos"),
 ]
