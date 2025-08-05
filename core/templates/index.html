@@ -2,9 +2,13 @@
 
 {% block content %}
 <section class="barra-pesquisa"> 
-    <input type="text" placeholder="Busque o nome ou número da chave aqui...">
-    <button>PESQUISAR</button>
-    <button>FILTROS </button>
+    <div class="container-fluid">
+        <form class="d-flex" role="search">
+            <input class="form-control campo-pesquisa" type="search" placeholder="Busque o nome ou número da chave aqui..." aria-label="Search"/>
+            <button class="btn btn-pesquisa me-2" type="submit">PESQUISAR</button>
+            <button class="btn btn-light rounded-pill shadow-sm btn-filtros" type="submit">FILTROS</button>
+        </form>
+    </div>
 </section>
 
 <section class="grade-cartoes">

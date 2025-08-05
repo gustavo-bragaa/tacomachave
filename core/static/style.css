@@ -20,7 +20,6 @@ body{
   margin-bottom: 1em;
 }
 
-
 .main-logo {
   height: 6em;
   margin-left: 1em;
@@ -53,10 +52,41 @@ body{
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-
 .nav-buttons a:hover,
 .nav-buttons button:hover {
   background-color: #e4e4e4;
 }
-  
+
+.campo-pesquisa {
+  border-radius: 2em 0em 0em 2em;
+  border: #2818BD 2px solid;
+
+}
+
+.btn-pesquisa{
+  border-radius: 0em 2em 2em 0em;
+  border: #2818BD 2px solid;
+  background-color: #2818BD;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-pesquisa:hover{
+  color: #2818BD;
+  border: #2818BD 2px solid;
+}
+
+.btn-filtros {
+  background-color: #dbdbdb; /* cinza claro */
+  color: #7c8185; /* cinza do texto */
+  border: #7c8185 2px solid;
+  border-radius: 50px; /* arredondado */
+  padding: 6px 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.btn-filtros:hover {
+  background-color: #d5d5d5;
+  color: #7c8185;
+}
 
