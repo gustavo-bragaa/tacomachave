@@ -11,7 +11,12 @@ body{
 }
 
 .header{
-  background-color: #fa1515;
+  background-color: #FFDA0A;
+}
+
+.under-header {
+  background-color: #2818BD;
+  height: 1.5em;
   margin-bottom: 1em;
 }
 
