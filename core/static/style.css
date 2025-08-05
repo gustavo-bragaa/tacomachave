@@ -11,8 +11,13 @@ body{
 }
 
 .header{
-  background-color: #facc15;
+  background-color: #15fa20;
   margin-bottom: 1em;
+}
+
+.under-header{
+  background-color: #2818BD;
+  color: red;
 }
 
 .main-logo {
