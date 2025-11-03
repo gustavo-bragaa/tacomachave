@@ -35,23 +35,3 @@ class UsuarioUpdateForm(forms.ModelForm):
             'login': forms.TextInput(attrs={'class': 'form-control'}),
             'perfil': forms.Select(attrs={'class': 'form-select'}),
         }
-
-class MovimentacaoCreateForm(forms.ModelForm):
-    class Meta:
-        model = Movimentacao
-        fields = ['chave', 'porteiro_liberou', 'nome_solicitante', 'matricula_solicitante']
-        widgets = {
-            'chave': forms.Select(attrs={'class': 'form-select'}),
-            'porteiro_liberou': forms.Select(attrs={'class': 'form-select'}),
-            'nome_solicitante': forms.TextInput(attrs={'class': 'form-control'}),
-            'matricula_solicitante': forms.TextInput(attrs={'class': 'form-control'}),
-        }
-
-class PermissaoForm(forms.ModelForm):
-    class Meta:
-        model = Permissao
-        fields = ['usuario', 'chave']
-        widgets = {
-            'usuario': forms.Select(attrs={'class': 'form-select'}),
-            'chave': forms.Select(attrs={'class': 'form-select'}),
-        }
