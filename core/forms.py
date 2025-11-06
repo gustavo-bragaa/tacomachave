@@ -5,33 +5,40 @@ class ChaveForm(forms.ModelForm):
     class Meta:
         model = Chave
         fields = ['nome_sala', 'numero_porta', 'status']
-        widgets = {
-            'nome_sala': forms.TextInput(attrs={'class': 'form-control'}),
-            'numero_porta': forms.TextInput(attrs={'class': 'form-control'}),
-            'status': forms.Select(attrs={'class': 'form-select'}),
-        }
 
 class UsuarioCreateForm(forms.ModelForm):
-    senha = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), 
-                            label="Senha")
+    senha = forms.CharField(
+        widget=forms.PasswordInput(render_value=False), 
+        required=True,
+        help_text="Crie uma senha forte."
+    )
 
+    confirmar_senha = forms.CharField(
+        widget=forms.PasswordInput(render_value=False), 
+        required=True, 
+        label="Confirmar Senha"
+    )
     class Meta:
         model = Usuario
-        fields = ['nome', 'matricula', 'login', 'senha', 'perfil']
-        widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'matricula': forms.TextInput(attrs={'class': 'form-control'}),
-            'login': forms.TextInput(attrs={'class': 'form-control'}),
-            'perfil': forms.Select(attrs={'class': 'form-select'}),
-        }
+        fields = ['nome', 'matricula', 'login', 'perfil', 'senha', 'confirmar_senha']
 
-class UsuarioUpdateForm(forms.ModelForm):
+    def clean(self):
+        cleaned_data = super().clean()
+        senha = cleaned_data.get("senha")
+        confirmar_senha = cleaned_data.get("confirmar_senha")
+
+        if senha and confirmar_senha and senha != confirmar_senha:
+            self.add_error('confirmar_senha', "As senhas não coincidem.")
+            
+        return cleaned_data
+
+class LoginForm(forms.Form):
+    login = forms.CharField(max_length=45)
+    senha = forms.CharField(widget=forms.PasswordInput)
+
+
+class EmprestarForm(forms.ModelForm):
     class Meta:
-        model = Usuario
-        fields = ['nome', 'matricula', 'login', 'perfil']
-        widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'matricula': forms.TextInput(attrs={'class': 'form-control'}),
-            'login': forms.TextInput(attrs={'class': 'form-control'}),
-            'perfil': forms.Select(attrs={'class': 'form-select'}),
-        }
+        model = Movimentacao
+        # Campos que o porteiro deve preencher ao emprestar
+        fields = ['nome_solicitante', 'matricula_solicitante']

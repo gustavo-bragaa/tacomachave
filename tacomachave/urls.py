@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from core.views import index, perfil, login, sobre
+from core.views import login_view, logout_view
+from core.views import lista_usuarios, editar_usuario, deletar_usuario, criar_usuario
+from core.views import emprestar_chave, devolver_chave, historico_movimentacoes
 
 urlpatterns = [
     path('admin/', admin.site.urls),
