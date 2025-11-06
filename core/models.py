@@ -28,23 +28,15 @@ class Usuario(models.Model):
         return self.nome
 
 class Movimentacao(models.Model):
-    chave = models.ForeignKey(Chave, on_delete=models.CASCADE, ...)
-    data_devolucao = models.DateTimeField(null=True, blank=True, ...)
-
-    def save(self, *args, **kwargs):
-        """
-        Sobrescreve o método 'save' para automatizar
-        o status da chave ligada a esta movimentação.
-        """
+    chave = models.ForeignKey(Chave, on_delete=models.CASCADE, help_text="Chave que foi movimentada")
+    porteiro_liberou = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name='movimentacoes_liberadas', help_text="Porteiro que registrou a saída")
     
-        if self.data_devolucao:
-            self.chave.status = 'disponivel'
-        else:
-            self.chave.status = 'indisponivel'
-        
-        self.chave.save()
-        
-        super().save(*args, **kwargs)
+    # informações da pessoa que retirou a chave (não precisa ser um usuário do sistema)
+    nome_solicitante = models.CharField(max_length=255, help_text="Nome de quem retirou a chave")
+    matricula_solicitante = models.CharField(max_length=45, help_text="Matrícula de quem retirou a chave")
+    
+    data_retirada = models.DateTimeField(auto_now_add=True, help_text="Data e hora em que a chave foi retirada")
+    data_devolucao = models.DateTimeField(null=True, blank=True, help_text="Data e hora em que a chave foi devolvida")
 
     def __str__(self):
         return f"Chave {self.chave.nome_sala} retirada por {self.nome_solicitante}"
