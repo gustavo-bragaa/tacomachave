@@ -40,15 +40,3 @@ class Movimentacao(models.Model):
 
     def __str__(self):
         return f"Chave {self.chave.nome_sala} retirada por {self.nome_solicitante}"
-
-# tabela para definir as regras de quem pode pegar qual chave
-class Permissao(models.Model):
-
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, help_text="Usuário que recebe a permissão")
-    chave = models.ForeignKey(Chave, on_delete=models.CASCADE, help_text="Chave para a qual a permissão é concedida")
-
-    class Meta:
-        unique_together = ('usuario', 'chave')
-
-    def __str__(self):
-        return f"Permissão para {self.usuario.nome} na chave {self.chave.nome_sala}"
