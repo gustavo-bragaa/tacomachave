@@ -1,8 +1,6 @@
-# tacomachave 
+# PROJETO - TÁ COM A CHAVE?!
 
-# 28 07 2025
+Projeto da matéria de Programação para a Internet do curso de Informática do IFRN - Canguaretama, orientado pelo professor Bruno Gomes.
 
-12/08/38 - urls funcionando
-ASIKJFDHASKDJHFLKASJHDFALKSJHFD
-
-TESTE HOJE
+# TESTE DE COMMIT
+FEITO ENTREGA 04/12
