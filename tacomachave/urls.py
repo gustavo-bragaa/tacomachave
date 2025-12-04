@@ -24,7 +24,7 @@ from core.views import emprestar_chave, devolver_chave, historico_movimentacoes
 =======
 from django.urls import path, include
 from core.views import index, perfil, sobre
->>>>>>> 619ac214cf9a04e5412e10197591adde0076a3a0
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
