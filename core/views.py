@@ -14,7 +14,7 @@ def perfil (request):
     return render(request, 'perfil.html')
 
 def login(request):
-    return render(request, 'login.html')
+    return render(request, 'tela_login.html')
 
 def sobre(request):
     return render(request, 'sobrenos.html')
