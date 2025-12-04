@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<section class="form-login">
+  <h2>LOGIN</h2>
+  <form method="POST" action="{% url 'login' %}">
+    <label for="usuario">USUÁRIO:</label>
+    <input type="text" name="usuario" id="usuario" required>
+
+    <label for="senha">SENHA:</label>
+    <input type="password" name="senha" id="senha" required>
+
+    <button type="submit">ENTRAR</button>
+  </form>
+</section>
+{% endblock %}
