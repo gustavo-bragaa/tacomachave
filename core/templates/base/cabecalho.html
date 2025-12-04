@@ -20,9 +20,27 @@
                     <li class="nav-item bg-white rounded me-3">
                         <a class="nav-link text-black" aria-current="page" href="{% url 'sobrenos' %}"><img src="../../static/img/icons/sobrenos-icon.svg" class="img-fluid me-1" alt="">Sobre nós</a>
                     </li>
-                    <li class="nav-item bg-white rounded">
-                        <a class="nav-link text-black" href="http://127.0.0.1:8000/admin/"> <img src="../../static/img/icons/login-icon.svg" class="img-fluid me-1" alt=""> Login</a>
-                    </li>
+                    <div class="d-flex align-items-center">
+                        {% if user.is_authenticated %}
+                            <span class="me-3 fw-bold text-secondary">Olá, {{ user.username }}</span>
+                            
+                            <form action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                {% if user.is_staff %}
+                                    <a href="/admin/" class="btn btn-primary fw-bold me-2 shadow-sm" target="_blank">
+                                        <i class="bi bi-gear-fill me-2"></i> GERENCIAR
+                                    </a>
+                                {% endif %}                                
+                                <button type="submit" class="btn btn-outline-danger fw-bold">
+                                    SAIR
+                                </button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-light fw-bold text-secondary shadow-sm">
+                                <i class="bi bi-box-arrow-in-right me-2"></i> LOGIN
+                            </a>
+                        {% endif %}
+                    </div>
                 </ul>
             </div>
         </div>

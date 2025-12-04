@@ -13,8 +13,8 @@ def index (request):
 def perfil (request):
     return render(request, 'perfil.html')
 
-def login(request):
-    return render(request, 'login.html')
+# def login(request):
+#     return render(request, 'login.html')
 
 def sobre(request):
     return render(request, 'sobrenos.html')
