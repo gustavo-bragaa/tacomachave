@@ -22,7 +22,7 @@
                     </li>
                     <div class="d-flex align-items-center">
                         {% if request.session.usuario_id %}
-                            <span class="me-3 fw-bold text-secondary">Olá, {{ request.session.usuario_nome }}</span>
+                            <span class="me-3 fw-bold text-secondary">Olá!, {{ request.session.usuario_nome }}</span>
 
                             <form action="{% url 'logout' %}" method="post">
                                 {% csrf_token %}
