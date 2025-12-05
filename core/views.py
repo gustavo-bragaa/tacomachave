@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import Chave, Usuario, Movimentacao
 from .forms import LoginForm, UsuarioForm, EmprestarForm
@@ -196,3 +198,23 @@ def historico_movimentacoes(request):
     movimentacoes = Movimentacao.objects.all().order_by('-data_retirada')
     
     return render(request, 'historico.html', {'movimentacoes': movimentacoes})
+
+@login_required
+def criar_login(request):
+    # acesso apenas para administradores (staff)
+    if not request.user.is_staff:
+        messages.error(request, "Acesso negado: apenas administradores podem criar logins.")
+        return redirect('index')
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, f"Usuário '{user.username}' criado com sucesso.")
+            return redirect('index')
+        else:
+            messages.error(request, "Corrija os erros no formulário.")
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'form_criar_login.html', {'form': form})

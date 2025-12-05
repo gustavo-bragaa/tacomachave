@@ -15,6 +15,14 @@
     <div class="container py-5">
         <p>USUÁRIO: admin <br>
         SENHA: 123456</p>
+
+        {% comment %} Botão visível apenas para administradores (usuários Django com is_staff) {% endcomment %}
+        {% if user.is_authenticated and user.is_staff %}
+            <div class="mb-3">
+                <a href="{% url 'criar_login' %}" class="btn btn-success">Criar novo login</a>
+            </div>
+        {% endif %}
+
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             
             {% for chave in chaves %}
