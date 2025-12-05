@@ -5,13 +5,33 @@
 {% block content %}
 <section class="form-login">
   <h2>LOGIN</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% if form.non_field_errors %}
+    {% for err in form.non_field_errors %}
+      <div class="alert alert-danger">{{ err }}</div>
+    {% endfor %}
+  {% endif %}
+
   <form method="POST" action="{% url 'login' %}">
     {% csrf_token %}
+
     <label for="usuario">USUÁRIO:</label>
-    <input type="text" name="usuario" id="usuario" required>
+    <input type="text" name="username" id="usuario" required value="{{ form.username.value|default_if_none:'' }}">
+    {% for err in form.username.errors %}
+      <div class="text-danger small">{{ err }}</div>
+    {% endfor %}
 
     <label for="senha">SENHA:</label>
-    <input type="password" name="senha" id="senha" required>
+    <input type="password" name="password" id="senha" required>
+    {% for err in form.password.errors %}
+      <div class="text-danger small">{{ err }}</div>
+    {% endfor %}
 
     <button type="submit">ENTRAR</button>
   </form>

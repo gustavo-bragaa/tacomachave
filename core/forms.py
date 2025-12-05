@@ -32,9 +32,13 @@ class UsuarioCreateForm(forms.ModelForm):
             
         return cleaned_data
 
+# Alias para manter compatibilidade com o código existente
+UsuarioForm = UsuarioCreateForm
+
+# Formulário de login ajustado para usar os nomes padrão do Django (username, password)
 class LoginForm(forms.Form):
-    login = forms.CharField(max_length=45)
-    senha = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)
 
 
 class EmprestarForm(forms.ModelForm):

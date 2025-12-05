@@ -1,5 +1,10 @@
-from django.shortcuts import render
-from .models import Chave
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.utils import timezone
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+
+from .models import Chave, Usuario, Movimentacao
+from .forms import LoginForm, UsuarioForm, EmprestarForm
 
 # Create your views here.
 
@@ -20,35 +25,51 @@ def sobre(request):
     return render(request, 'sobrenos.html')
 
 def login_view(request):
-    if 'usuario_id' in request.session:
+    if request.user.is_authenticated:
         return redirect('index')
 
-    form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            login = form.cleaned_data['login']
-            senha = form.cleaned_data['senha']
-            
-            try:
-                usuario = Usuario.objects.get(login=login)
-                
-                if check_password(senha, usuario.senha):
-                    request.session['usuario_id'] = usuario.id
-                    request.session['usuario_nome'] = usuario.nome
-                    request.session['usuario_perfil'] = usuario.perfil
-                    
-                    messages.success(request, f"Bem-vindo, {usuario.nome}!")
-                    return redirect('index') 
-                else:
-                    messages.error(request, "Login ou senha inválidos.")
-            except Usuario.DoesNotExist:
-                messages.error(request, "Login ou senha inválidos.")
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
 
-    return render(request, 'login.html', {'form': form})
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                auth_login(request, user)
+                # também popular sessão customizada para compatibilidade com o código existente
+                try:
+                    perfil_usuario = None
+                    # se existir um Usuário customizado relacionado pelo login, populamos sessão
+                    usuario_obj = Usuario.objects.filter(login=username).first()
+                    if usuario_obj:
+                        request.session['usuario_id'] = usuario_obj.id
+                        request.session['usuario_nome'] = usuario_obj.nome
+                        request.session['usuario_perfil'] = usuario_obj.perfil
+                    else:
+                        # fallback: usar dados do User do Django
+                        request.session['usuario_id'] = user.id
+                        request.session['usuario_nome'] = user.get_full_name() or user.username
+                        request.session['usuario_perfil'] = 'admin' if user.is_staff else 'porteiro'
+                except Exception:
+                    pass
+
+                messages.success(request, f"Bem-vindo, {user.get_full_name() or user.username}!")
+                return redirect('index')
+            else:
+                messages.error(request, "Login ou senha inválidos.")
+        else:
+            messages.error(request, "Erro de validação do formulário.")
+    else:
+        form = LoginForm()
+
+    return render(request, 'tela_login.html', {'form': form})
+
 
 def logout_view(request):
+    # limpar sessão customizada e deslogar do sistema Django
     request.session.flush()
+    auth_logout(request)
     messages.info(request, "Você saiu da sua conta.")
     return redirect('login')
 
@@ -114,7 +135,7 @@ def emprestar_chave(request, id_chave):
     chave = get_object_or_404(Chave, id=id_chave)
 
     if chave.status == 'indisponivel':
-        messages.error(request, f"A chave {chave.nome_sala} já está em uso.")
+        messages.error(request, f"A chave {chave.nome_sala} já está in uso.")
         return redirect('index')
 
     if request.method == 'POST':

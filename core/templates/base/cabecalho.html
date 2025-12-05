@@ -12,7 +12,7 @@
     <nav class="navbar navbar-expand-lg header">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'index' %}"><img src="../../static/img/main-logo.png" class="img-fluid main-logo" alt=""></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="#navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end me-2" id="navbarNavDropdown">
@@ -21,16 +21,11 @@
                         <a class="nav-link text-black" aria-current="page" href="{% url 'sobrenos' %}"><img src="../../static/img/icons/sobrenos-icon.svg" class="img-fluid me-1" alt="">Sobre nós</a>
                     </li>
                     <div class="d-flex align-items-center">
-                        {% if user.is_authenticated %}
-                            <span class="me-3 fw-bold text-secondary">Olá, {{ user.username }}</span>
-                            
+                        {% if request.session.usuario_id %}
+                            <span class="me-3 fw-bold text-secondary">Olá, {{ request.session.usuario_nome }}</span>
+
                             <form action="{% url 'logout' %}" method="post">
                                 {% csrf_token %}
-                                {% if user.is_staff %}
-                                    <a href="/admin/" class="btn btn-primary fw-bold me-2 shadow-sm" target="_blank">
-                                        <i class="bi bi-gear-fill me-2"></i> GERENCIAR
-                                    </a>
-                                {% endif %}                                
                                 <button type="submit" class="btn btn-outline-danger fw-bold">
                                     SAIR
                                 </button>
