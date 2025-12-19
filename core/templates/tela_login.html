@@ -1,10 +1,11 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<section class="form-login">
-  <h2>LOGIN</h2>
+<div class="login-container">
+  <h1 class="login-title">LOGIN</h1>
 
   {% if messages %}
     {% for message in messages %}
@@ -18,22 +19,22 @@
     {% endfor %}
   {% endif %}
 
-  <form method="POST" action="{% url 'login' %}">
+  <form method="POST" action="{% url 'login' %}" class="login-form">
     {% csrf_token %}
 
     <label for="usuario">USUÁRIO:</label>
-    <input type="text" name="username" id="usuario" required value="{{ form.username.value|default_if_none:'' }}">
+    <input type="text" name="username" id="usuario" placeholder="Digite seu usuário..." required value="{{ form.username.value|default_if_none:'' }}">
     {% for err in form.username.errors %}
       <div class="text-danger small">{{ err }}</div>
     {% endfor %}
 
     <label for="senha">SENHA:</label>
-    <input type="password" name="password" id="senha" required>
+    <input type="password" name="password" id="senha" placeholder="Digite sua senha..." required >
     {% for err in form.password.errors %}
       <div class="text-danger small">{{ err }}</div>
     {% endfor %}
 
-    <button type="submit">ENTRAR</button>
+    <button type="submit" class="btn-login">ENTRAR</button>
   </form>
 </section>
 {% endblock %}
