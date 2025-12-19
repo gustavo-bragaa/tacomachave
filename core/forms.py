@@ -46,3 +46,16 @@ class EmprestarForm(forms.ModelForm):
         model = Movimentacao
         # Campos que o porteiro deve preencher ao emprestar
         fields = ['nome_solicitante', 'matricula_solicitante']
+
+
+class MovimentacaoActionForm(forms.Form):
+    ACTION_CHOICES = (
+        ('retirar', 'Retirar chave'),
+        ('devolver', 'Devolver chave'),
+    )
+
+    chave = forms.ModelChoiceField(queryset=Chave.objects.all(), label='Chave')
+    action = forms.ChoiceField(choices=ACTION_CHOICES, widget=forms.RadioSelect, label='Ação')
+    nome_solicitante = forms.CharField(max_length=255, label='Nome do solicitante', required=False)
+    matricula_solicitante = forms.CharField(max_length=45, label='Matrícula do solicitante', required=False)
+    observacao = forms.CharField(widget=forms.Textarea(attrs={'rows':3}), required=False, label='Observação')

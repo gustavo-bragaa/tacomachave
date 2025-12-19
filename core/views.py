@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.utils import timezone
 
 from .models import Chave, Usuario, Movimentacao
 from .forms import LoginForm, UsuarioForm, EmprestarForm
@@ -206,9 +207,99 @@ def devolver_chave(request, id_chave):
 
 
 def historico_movimentacoes(request):
+    # Permite acesso somente para usuários autenticados que sejam admin (is_staff)
+    # ou porteiros (perfil armazenado na sessão como 'porteiro')
+    if not request.user.is_authenticated:
+        messages.error(request, "Acesso restrito. Faça login.")
+        return redirect('login')
+
+    perfil = request.session.get('usuario_perfil')
+    if not (request.user.is_staff or perfil == 'porteiro'):
+        messages.error(request, "Acesso negado: apenas administradores e porteiros podem ver o histórico.")
+        return redirect('index')
+
     movimentacoes = Movimentacao.objects.all().order_by('-data_retirada')
-    
+
     return render(request, 'historico.html', {'movimentacoes': movimentacoes})
+
+
+def registrar_movimentacao(request):
+    # somente admins e porteiros
+    if not request.user.is_authenticated:
+        messages.error(request, "Acesso restrito. Faça login.")
+        return redirect('login')
+
+    perfil = request.session.get('usuario_perfil')
+    if not (request.user.is_staff or perfil == 'porteiro'):
+        messages.error(request, "Acesso negado: apenas administradores e porteiros podem registrar movimentações.")
+        return redirect('index')
+
+    from .forms import MovimentacaoActionForm
+
+    if request.method == 'POST':
+        form = MovimentacaoActionForm(request.POST)
+        if form.is_valid():
+            chave = form.cleaned_data['chave']
+            action = form.cleaned_data['action']
+            nome = form.cleaned_data.get('nome_solicitante') or ''
+            matricula = form.cleaned_data.get('matricula_solicitante') or ''
+            observacao = form.cleaned_data.get('observacao') or ''
+
+            # identificar o porteiro no modelo Usuario
+            usuario_obj = None
+            usuario_id = request.session.get('usuario_id')
+            if usuario_id:
+                usuario_obj = Usuario.objects.filter(id=usuario_id).first()
+            if not usuario_obj:
+                usuario_obj = Usuario.objects.filter(login=request.user.username).first()
+
+            if not usuario_obj:
+                messages.error(request, "Não foi possível identificar o porteiro no sistema. Verifique seu login.")
+                return redirect('index')
+
+            if action == 'retirar':
+                if chave.status != 'disponivel':
+                    messages.error(request, "Esta chave já está indisponível.")
+                    return redirect('index')
+
+                mov = Movimentacao.objects.create(
+                    chave=chave,
+                    porteiro_liberou=usuario_obj,
+                    nome_solicitante=nome,
+                    matricula_solicitante=matricula,
+                    observacao=observacao,
+                    data_retirada=timezone.now(),
+                )
+                chave.status = 'indisponivel'
+                chave.save()
+
+                messages.success(request, f"Chave {chave.nome_sala} emprestada para {nome}.")
+                return redirect('index')
+
+            else:  # devolver
+                try:
+                    mov = Movimentacao.objects.filter(chave=chave, data_devolucao=None).latest('data_retirada')
+                except Movimentacao.DoesNotExist:
+                    messages.error(request, "Não há registro de retirada aberto para essa chave.")
+                    return redirect('index')
+
+                mov.data_devolucao = timezone.now()
+                # anexar observação à movimentação existente, se fornecida
+                if observacao:
+                    mov.observacao = (mov.observacao or '') + '\n' + observacao if mov.observacao else observacao
+                mov.save()
+
+                chave.status = 'disponivel'
+                chave.save()
+
+                messages.success(request, f"Chave {chave.nome_sala} devolvida.")
+                return redirect('index')
+        else:
+            messages.error(request, "Corrija os erros no formulário.")
+    else:
+        form = MovimentacaoActionForm()
+
+    return render(request, 'registrar_movimentacao.html', {'form': form})
 
 @login_required
 def criar_login(request):

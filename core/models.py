@@ -37,6 +37,7 @@ class Movimentacao(models.Model):
     
     data_retirada = models.DateTimeField(auto_now_add=True, help_text="Data e hora em que a chave foi retirada")
     data_devolucao = models.DateTimeField(null=True, blank=True, help_text="Data e hora em que a chave foi devolvida")
+    observacao = models.TextField(null=True, blank=True, help_text="Observações sobre a movimentação")
 
     def __str__(self):
         return f"Chave {self.chave.nome_sala} retirada por {self.nome_solicitante}"

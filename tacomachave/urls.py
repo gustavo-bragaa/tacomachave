@@ -26,6 +26,8 @@ urlpatterns = [
     path('perfil/', views.perfil, name="perfil"),
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
+    path('historico/', views.historico_movimentacoes, name='historico'),
+    path('registrar/', views.registrar_movimentacao, name='registrar_movimentacao'),
     path('sobrenos/', views.sobre, name="sobrenos"),
     path('criar-login/', views.criar_login, name='criar_login'),
 ]

@@ -16,10 +16,17 @@
         <p>USUÁRIO: admin <br>
         SENHA: 123456</p>
 
-        {% comment %} Botão visível apenas para administradores (usuários Django com is_staff) {% endcomment %}
-        {% if user.is_authenticated and user.is_staff %}
-            <div class="mb-3">
-                <a href="{% url 'criar_login' %}" class="btn btn-success">Criar novo login</a>
+        {% comment %} Botões administrativos/porteiro {% endcomment %}
+        {% if user.is_authenticated %}
+            <div class="mb-3 d-flex gap-2">
+                {% if user.is_staff %}
+                    <a href="{% url 'criar_login' %}" class="btn btn-success">Criar novo login</a>
+                {% endif %}
+
+                {% if user.is_staff or request.session.usuario_perfil == 'porteiro' %}
+                    <a href="{% url 'historico' %}" class="btn btn-outline-primary">Histórico</a>
+                    <a href="{% url 'registrar_movimentacao' %}" class="btn btn-outline-secondary">Registrar</a>
+                {% endif %}
             </div>
         {% endif %}
 

@@ -252,3 +252,57 @@ body{
         font-size: 14px;
     }
 }
+
+/* Minimal page card used by historico and registrar pages */
+.page-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+}
+
+.muted {
+    color: #6c757d;
+}
+
+.registrar-container input,
+.registrar-container select,
+.registrar-container textarea,
+.historico-container input,
+.historico-container select,
+.historico-container textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e6e6e6;
+    background: #fafafa;
+    margin-top: 6px;
+    margin-bottom: 8px;
+    font-family: inherit;
+}
+
+.registrar-container textarea {
+    min-height: 100px;
+}
+
+.table-small {
+    font-size: 14px;
+}
+
+.actions-row {
+    display: flex;
+    gap: 8px;
+}

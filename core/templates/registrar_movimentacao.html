@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Registrar Movimentação{% endblock %}
+
+{% block content %}
+<section class="registrar-container">
+  <div class="container py-5">
+    <div class="page-card">
+      <div class="page-header">
+        <h2 class="page-title">Registrar Movimentação</h2>
+        <a href="{% url 'index' %}" class="btn btn-sm btn-outline-secondary">Voltar</a>
+      </div>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="mb-3">
+          {{ form.chave.label_tag }}
+          {{ form.chave }}
+          {% for err in form.chave.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.action.label_tag }}
+          {{ form.action }}
+          {% for err in form.action.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.nome_solicitante.label_tag }}
+          {{ form.nome_solicitante }}
+          {% for err in form.nome_solicitante.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.matricula_solicitante.label_tag }}
+          {{ form.matricula_solicitante }}
+          {% for err in form.matricula_solicitante.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.observacao.label_tag }}
+          {{ form.observacao }}
+          {% for err in form.observacao.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="actions-row">
+          <button type="submit" class="btn btn-primary">Registrar</button>
+          <a href="{% url 'index' %}" class="btn btn-light">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
