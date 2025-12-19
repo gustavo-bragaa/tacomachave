@@ -94,12 +94,13 @@ body{
 
 /* Login Styles */
 .login-wrapper {
-    min-height: calc(100vh - 120px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 20px;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* fundo neutro: usar mesmo fundo do body */
+  background: transparent;
+  padding: 20px;
 }
 
 .login-container {

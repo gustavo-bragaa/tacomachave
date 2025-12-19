@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -11,11 +12,21 @@ from .forms import LoginForm, UsuarioForm, EmprestarForm
 # Create your views here.
 
 def index (request):
-    # Busca todas as chaves cadastradas no banco
-    chaves = Chave.objects.all()
-    
-    # Envia as chaves para o HTML dentro do "contexto"
-    return render(request, 'index.html', {'chaves': chaves})
+    # Busca todas as chaves cadastradas no banco — com suporte à busca
+    q = request.GET.get('q', '').strip()
+    if q:
+        chaves = Chave.objects.filter(
+            Q(nome_sala__icontains=q) |
+            Q(numero_porta__icontains=q)
+        ).order_by('nome_sala')
+    else:
+        chaves = Chave.objects.all().order_by('nome_sala')
+
+    # Envia as chaves e o termo de busca para o template
+    return render(request, 'index.html', {
+        'chaves': chaves,
+        'q': q,
+    })
 
 def perfil (request):
     return render(request, 'perfil.html')

@@ -3,10 +3,10 @@
 {% block content %}
 <section class="barra-pesquisa"> 
     <div class="container-fluid">
-        <form class="d-flex" role="search">
-            <input class="form-control campo-pesquisa" type="search" placeholder="Busque o nome ou número da chave aqui..." aria-label="Search"/>
+        <form class="d-flex" role="search" method="get" action="{% url 'index' %}">
+            <input name="q" class="form-control campo-pesquisa" type="search" placeholder="Busque o nome ou número da chave aqui..." aria-label="Search" value="{{ q|default_if_none:'' }}" />
             <button class="btn btn-pesquisa me-2" type="submit">PESQUISAR</button>
-            <button class="btn btn-light rounded-pill shadow-sm btn-filtros" type="submit">FILTROS</button>
+            <button class="btn btn-light rounded-pill shadow-sm btn-filtros" type="button">FILTROS</button>
         </form>
     </div>
 </section>
